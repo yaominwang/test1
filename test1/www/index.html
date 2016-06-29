@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html ng-app="ionicApp">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+    <title></title>
+
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <script src="lib/ionic/js/ionic.bundle.min.js"></script>
+    <!-- ng cordova js -->
+    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+    <script src="js/sockjs-0.3.4.js"></script>
+    <script src="js/stomp.js"></script>
+    <script src="js/service/commFunService.js"></script>
+    <script src="script.js"></script>
+
+    <style>
+        /*.tabs-background-dark .tabs,*/
+        /*.tabs-background-dark > .tabs {*/
+        /*background-color: #111;*/
+        /*background-image: linear-gradient(0deg, #111, #111 50%, transparent 50%);*/
+        /*border-color: #111; }*/
+
+    </style>
+
+</head>
+
+<body>
+
+<ion-nav-bar align-title="center" class="nav-title-slide bar-positive      bar-dark ">
+    <ion-nav-back-button class="button-icon ion-arrow-left-c">
+
+    </ion-nav-back-button>
+</ion-nav-bar>
+
+<ion-nav-view animation="slide-left-right"></ion-nav-view>
+
+<script id="tabs.html" type="text/ng-template">
+    <ion-tabs class=" tabs-icon-bottom tabs-positive tabs-background-dark">
+
+        <ion-tab title="路况" icon="ion-home" class="" href="#/tab/myMsg">
+            <ion-nav-view name="myMsg-tab"></ion-nav-view>
+        </ion-tab>
+        <ion-tab title="验单" icon="ion-information" href="#/tab/sendMsg">
+            <ion-nav-view name="sendMsg-tab"></ion-nav-view>
+        </ion-tab>
+        <ion-tab title="风险" icon="ion-alert" ui-sref="tabs.myInfo">
+            <ion-nav-view name="myInfo-tab"></ion-nav-view>
+        </ion-tab>
+    </ion-tabs>
+</script>
+
+<script id="myMsg.html" type="text/ng-template">
+    <ion-view title="路况">
+        <ion-content class=" ">
+            <iframe id="mapFrame" name="mapFrame"
+                    style="height: 90vh;width: 100%; overflow: hidden;display: block;border: none;margin: 0;padding: 0;"
+                    src="map.html" frameborder=" no" border=" 0" marginwidth=" 0″ marginheight=" 0″ scrolling="no"
+                    allowtransparency=" yes">
+            </iframe>
+
+        </ion-content>
+    </ion-view>
+</script>
+
+
+<script id="sendMsg.html" type="text/ng-template">
+    <ion-view title="验单">
+        <ion-content class="">
+
+            <div>
+                <div style="clear: both; " class="item item-input-inset">
+                    <span class="input-label" style="float: left;font-size: 12px;width:20%">手机号码:</span>
+                    <input type="text" class="item-input-wrapper" style="float: left;font-size: 12px;width:75%"
+                           ng-model="sendMsg.phoneNbr">
+                </div>
+                <div  style="clear: both;padding-top: 20px;text-align: center;margin-top: 15vh;  " >
+                    <button   ng-click="checkBlackCustomer();" class="button button-balanced"  style="width:30vw;">验证</button>
+                </div>
+                <div  style="clear: both;padding-top: 20px;text-align: center;margin-top: 10vh;  ">
+                    <button   ng-click="submitBlackCustomer();" class="button button-balanced" style="width:30vw;">举报</button>
+                </div>
+
+
+            </div>
+
+        </ion-content>
+    </ion-view>
+</script>
+
+
+<script id="myInfo.html" type="text/ng-template">
+    <ion-view title="风险">
+        <ion-content>
+
+            <div class="list" style="margin-top: 5vh;">
+
+                <ion-radio ng-repeat="item in clientSideList" ng-value="item.value" ng-model="roadCondition.infoType">
+                    {{ item.text }}
+                </ion-radio>
+
+                <div  style="clear: both;padding-top: 20px;text-align: center;margin-top: 15vh;  " >
+                    <button   ng-click="submitRoadCondition();" class="button button-balanced"  style="width:30vw;">上报</button>
+                </div>
+
+            </div>
+
+
+        </ion-content>
+    </ion-view>
+</script>
+
+
+</body>
+</html>

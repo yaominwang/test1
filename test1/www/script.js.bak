@@ -1,0 +1,96 @@
+angular.module('ionicApp', ['ionic','ngCordova'] )
+
+    .run(function ($rootScope,$ionicPlatform, $cordovaNetwork, $cordovaBatteryStatus, $cordovaLocalNotification, $cordovaPush) {
+
+    })
+.config(function ($stateProvider, $urlRouterProvider,$ionicConfigProvider ) {
+      $ionicConfigProvider.platform.ios.tabs.style('standard');
+      $ionicConfigProvider.platform.ios.tabs.position('bottom');
+      $ionicConfigProvider.platform.android.tabs.style('standard');
+      $ionicConfigProvider.platform.android.tabs.position('bottom');
+      $ionicConfigProvider.platform.ios.navBar.alignTitle('center');
+      $ionicConfigProvider.platform.android.navBar.alignTitle('center');
+      $ionicConfigProvider.platform.ios.backButton.previousTitleText('').icon('ion-ios-arrow-thin-left');
+      $ionicConfigProvider.platform.android.backButton.previousTitleText('').icon('ion-android-arrow-back');
+      $ionicConfigProvider.platform.ios.views.transition('ios');
+      $ionicConfigProvider.platform.android.views.transition('android');
+
+
+  $stateProvider
+    .state('tabs', {
+      url: "/tab",
+      abstract: true,
+      templateUrl: "tabs.html" 
+    })
+    .state('tabs.myMsg', {
+      url: "/myMsg",
+      views: {
+        'myMsg-tab': {
+          templateUrl: "myMsg.html",
+          controller: 'HomeTabCtrl'
+        }
+      }
+    })
+    .state('tabs.sendMsg', {
+      url: "/sendMsg",
+      views: {
+        'sendMsg-tab': {
+          templateUrl: "sendMsg.html",
+         controller: 'HomeTabCtrl'
+        }
+      }
+    })
+    .state('tabs.myInfo', {
+      url: "/myInfo",
+      views: {
+        'myInfo-tab': {
+          templateUrl: "myInfo.html",
+          controller: 'HomeTabCtrl'
+        }
+      }
+    });
+  $urlRouterProvider.otherwise("/tab/myMsg");
+
+})
+
+.controller('HomeTabCtrl', function ($scope, $cordovaLocalNotification,$timeout) {
+      $scope.addNotification = function () {
+        var now = new Date();
+        var _60_seconds_from_now = new Date(now + 60 * 1000);
+        var event = {
+          id: 1,
+          at: _60_seconds_from_now,
+          title: "Test Event1111111111",
+          text: "this is a message about the event"
+        };
+        alert($cordovaLocalNotification);
+        document.addEventListener("deviceready", function () {
+          $cordovaLocalNotification.schedule(event).then(function () {
+            alert("local add : success");
+          });
+
+        }, false);
+      };
+
+
+      $scope.myTitle = 'Template';
+      $scope.items = [
+        {phoneNbr:"13333333333",beginPos:"西安美术学院",endPos:"西安大唐西市",desc:"抽烟喝酒",happenDate:"2016-5-12 12:12:34"},
+        {phoneNbr:"13333333333",beginPos:"西安美术学院1",endPos:"西安大唐西市1",desc:"抽烟喝酒1",happenDate:"2016-5-13 12:12:34"},
+        {phoneNbr:"13333333333",beginPos:"西安美术学院2",endPos:"西安大唐西市2",desc:"抽烟喝酒2",happenDate:"2016-5-14 12:12:34"}
+        ];
+      $scope.doRefresh = function() {
+        console.log('Refreshing!');
+        $timeout( function() {
+          $scope.items.push('New Item ' + Math.floor(Math.random() * 1000) + 4);
+          $scope.items.push('New Item ' + Math.floor(Math.random() * 1000) + 4);
+          $scope.items.push('New Item ' + Math.floor(Math.random() * 1000) + 4);
+          $scope.items.push('New Item ' + Math.floor(Math.random() * 1000) + 4);
+          //Stop the ion-refresher from spinning
+          $scope.$broadcast('scroll.refreshComplete');
+        }, 1000);
+      };
+
+
+
+});
